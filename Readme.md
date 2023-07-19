@@ -11,7 +11,7 @@ docker run --rm -itd -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 
 ```sql
 
 create or replace function slow_query()
-returns int
+returns table (numero int)
 language plpgsql
 as
 $$
@@ -21,11 +21,14 @@ begin
       --raise notice 'counter: %', loop_counter;
    end loop;
    
-   return 3;
+   RETURN QUERY
+   SELECT 3;
 end;
 $$;
 
 
 select * from slow_query ()
+
+select numero from slow_query ()
 
 ```

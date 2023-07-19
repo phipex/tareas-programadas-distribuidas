@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    name: postgres
+    url: jdbc:postgresql://localhost:5432/prueba
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL92Dialect
+    hibernate:
+#      ddl-auto: create-drop
+      show-sql: true
