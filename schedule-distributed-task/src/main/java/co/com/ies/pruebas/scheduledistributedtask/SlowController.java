@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SlowController {
 
-    private final VistaLentaRepository lentaRepository;
+    private final SlowService slowService;
 
-    public SlowController(VistaLentaRepository lentaRepository) {
-        this.lentaRepository = lentaRepository;
+    public SlowController(SlowService slowService) {
+        this.slowService = slowService;
     }
 
     @GetMapping("/vista")
-    public ResponseEntity<VistaLenta> getVistaLenta(){
-        return ResponseEntity.of(lentaRepository.findFirstByIdNotNull());
+    public ResponseEntity<SlowView> getVistaLenta(){
+        return ResponseEntity.of(slowService.getVistaLenta());
     }
 }

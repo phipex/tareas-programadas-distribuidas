@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "slow_view")
-public class VistaLenta {
+public class SlowView {
     @Id
     @Column(name = "numero", nullable = false)
     private Long id;
