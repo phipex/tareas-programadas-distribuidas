@@ -1,6 +1,9 @@
-package co.com.ies.pruebas.scheduledistributedtask;
+package co.com.ies.pruebas.scheduledistributedtask.web;
 
 
+import co.com.ies.pruebas.scheduledistributedtask.service.SlowService;
+import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowView;
+import co.com.ies.pruebas.scheduledistributedtask.config.MeasureTime;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

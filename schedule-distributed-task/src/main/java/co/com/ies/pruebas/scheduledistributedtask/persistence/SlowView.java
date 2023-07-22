@@ -1,4 +1,4 @@
-package co.com.ies.pruebas.scheduledistributedtask;
+package co.com.ies.pruebas.scheduledistributedtask.persistence;
 
 import lombok.Data;
 import lombok.Getter;

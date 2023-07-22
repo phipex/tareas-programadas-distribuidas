@@ -1,5 +1,8 @@
-package co.com.ies.pruebas.scheduledistributedtask;
+package co.com.ies.pruebas.scheduledistributedtask.service;
 
+import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowView;
+import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowViewRepository;
+import co.com.ies.pruebas.scheduledistributedtask.config.MeasureTime;
 import lombok.Data;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;

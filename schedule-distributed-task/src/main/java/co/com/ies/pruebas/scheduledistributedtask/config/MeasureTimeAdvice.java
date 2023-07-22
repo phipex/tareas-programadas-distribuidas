@@ -1,4 +1,4 @@
-package co.com.ies.pruebas.scheduledistributedtask;
+package co.com.ies.pruebas.scheduledistributedtask.config;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -15,7 +15,7 @@ public class MeasureTimeAdvice {
 
     private static Logger logger = LoggerFactory.getLogger(MeasureTimeAdvice.class);
 
-    @Around("@annotation(co.com.ies.pruebas.scheduledistributedtask.MeasureTime)")
+    @Around("@annotation(co.com.ies.pruebas.scheduledistributedtask.config.MeasureTime)")
     public Object measureTime(ProceedingJoinPoint point) throws Throwable {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

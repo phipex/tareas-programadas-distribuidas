@@ -1,4 +1,4 @@
-package co.com.ies.pruebas.scheduledistributedtask;
+package co.com.ies.pruebas.scheduledistributedtask.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
