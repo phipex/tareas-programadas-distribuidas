@@ -22,11 +22,11 @@ services:
 #    ports:
 #      - 8080:8080
     labels:
-      #      - "traefik.http.routers.webservice.rule=Host(`webservice.docker.localhost`) || (Host(`localhost`) && Path(`/webservice`))"
-
-      - "traefik.http.routers.webservice.rule=Host(`webservice.docker.localhost`) || (Path(`/webservice`))"
-      - "traefik.http.routers.webservice.service=webservice@docker"
-      - "traefik.http.services.webservice.loadbalancer.server.port=8080"
+      - "traefik.enable=true"
+      - "traefik.http.routers.app-8000.rule=Host(`http://webservice.docker.localhost/`) && PathPrefix(`/puerto-8000`)"
+      - "traefik.http.routers.app-8000.entrypoints=web"
+      - "traefik.http.routers.app-8001.rule=Host(`http://webservice.docker.localhost/`) && PathPrefix(`/puerto-8001`)"
+      - "traefik.http.routers.app-8001.entrypoints=web"
 
   postgres:
     image: postgres

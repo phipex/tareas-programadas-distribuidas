@@ -17,5 +17,5 @@ org:
     background-job-server:
       enabled: 'true'
     dashboard:
-      port: '0'
+      port: '8081'
       enabled: 'true'
