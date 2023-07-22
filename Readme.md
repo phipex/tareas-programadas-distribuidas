@@ -35,4 +35,13 @@ select numero from slow_query ()
 
 # slow_view
 
+# Urls
+- Dashboard
+  http://localhost:8080/dashboard
+
+- Task
+  http://webservice.docker.localhost/vista
+
+
+
 
