@@ -22,7 +22,7 @@ begin
    end loop;
    
    RETURN QUERY
-   SELECT 3;
+   SELECT floor(random()*1000)::int;
 end;
 $$;
 
@@ -32,3 +32,7 @@ select * from slow_query ()
 select numero from slow_query ()
 
 ```
+
+# slow_view
+
+
