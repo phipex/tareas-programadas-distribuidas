@@ -14,8 +14,16 @@ public class SlowController {
         this.slowService = slowService;
     }
 
+    @MeasureTime
     @GetMapping("/vista")
     public ResponseEntity<SlowView> getVistaLenta(){
         return ResponseEntity.of(slowService.getVistaLenta());
+    }
+
+    @MeasureTime
+    @GetMapping("/vista2")
+    public ResponseEntity<String> getVistaLentaContainers(){
+        slowService.test();
+        return ResponseEntity.ok("VistaLentaContainers");
     }
 }
