@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "2.7.13"
 	id("io.spring.dependency-management") version "1.0.15.RELEASE"
+	id ("com.google.cloud.tools.jib") version "3.3.2"
 }
 
 group = "co.com.ies.pruebas"

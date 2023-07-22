@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  task:
+    image: schedule-distributed-task:0.0.1-SNAPSHOT
+    ports:
+      - 8080:8080
+
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-init/:/docker-entrypoint-initdb.d/
