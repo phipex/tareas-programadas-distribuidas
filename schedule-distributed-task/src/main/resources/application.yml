@@ -19,3 +19,16 @@ org:
     dashboard:
       port: '8081'
       enabled: 'true'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG

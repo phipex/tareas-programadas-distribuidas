@@ -5,9 +5,9 @@ services:
 
   reverse-proxy:
     # The official v2 Traefik docker image
-    image: traefik:v2.4
+    image: traefik:v2.10
     # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker --log.level=DEBUG --api.dashboard=true
+    command: --log.format=json --accesslog=true --api.insecure=true --providers.docker --log.level=DEBUG --api.dashboard=true --api.debug=true
     ports:
       # The HTTP port
       - "80:80"
@@ -20,13 +20,21 @@ services:
   task:
     image: schedule-distributed-task:0.0.1-SNAPSHOT
 #    ports:
-#      - 8080:8080
+ #     - 8090:8080
+  #    - 8091:8081
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.app-8000.rule=Host(`http://webservice.docker.localhost/`) && PathPrefix(`/puerto-8000`)"
-      - "traefik.http.routers.app-8000.entrypoints=web"
-      - "traefik.http.routers.app-8001.rule=Host(`http://webservice.docker.localhost/`) && PathPrefix(`/puerto-8001`)"
-      - "traefik.http.routers.app-8001.entrypoints=web"
+    - "traefik.enable=true"
+
+    - "traefik.http.routers.servicio1.rule=Host(`webservice1.docker.localhost`)" # La regla para acceder al servicio por la ruta /servicio1
+    - "traefik.http.routers.servicio1.service=servicio1" # El nombre del servicio que se asignará al router servicio1
+    - "traefik.http.services.servicio1.loadbalancer.server.port=8080" # El puerto del contenedor al que se conectará el servicio servicio1
+    
+    - "traefik.http.routers.servicio2.rule=Host(`webservice2.docker.localhost`)" # La regla para acceder al servicio por la ruta /servicio2
+    - "traefik.http.routers.servicio2.service=servicio2" # El nombre del servicio que se asignará al router servicio2
+    - "traefik.http.services.servicio2.loadbalancer.server.port=8081" # El puerto del contenedor al que se conectará el servicio servicio2
+    depends_on:
+     - reverse-proxy
+     - postgres
 
   postgres:
     image: postgres
