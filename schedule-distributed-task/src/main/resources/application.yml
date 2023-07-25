@@ -16,6 +16,7 @@ org:
   jobrunr:
     background-job-server:
       enabled: 'true'
+      worker-count: 1
     dashboard:
       port: '8081'
       enabled: 'true'
