@@ -32,8 +32,10 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop
 	implementation("org.springframework.boot:spring-boot-starter-aop:3.1.2")
-	// https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-starter
-	implementation("org.jobrunr:jobrunr-spring-boot-starter:5.3.3")
+// https://mvnrepository.com/artifact/org.jobrunr/jobrunr-spring-boot-2-starter
+implementation("org.jobrunr:jobrunr-spring-boot-2-starter:6.2.3")
+
+
 
 
 }

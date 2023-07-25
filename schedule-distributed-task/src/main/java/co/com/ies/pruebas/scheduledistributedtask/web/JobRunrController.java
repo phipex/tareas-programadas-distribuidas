@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 
 @RestController
@@ -25,7 +27,16 @@ public class JobRunrController {
 
     @GetMapping(value = "/enqueue/{input}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> enqueue(@PathVariable("input") @DefaultValue("default-input") String input) {
-        jobScheduler.enqueue(() -> sampleJobService.executeSampleJob(input));
+        String ip = "0";
+        try {
+            String hostAddress = InetAddress.getLocalHost().getHostAddress() ;
+            String hostName = InetAddress.getLocalHost().getHostName();
+            ip = hostAddress;
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        final String varInput = input + " " + ip;
+        jobScheduler.enqueue(() -> sampleJobService.executeSampleJob(varInput));
         return okResponse("job enqueued successfully");
     }
 

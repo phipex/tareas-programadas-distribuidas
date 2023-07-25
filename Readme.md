@@ -39,8 +39,8 @@ select numero from slow_query ()
 - Dashboard
   http://localhost:8080/dashboard
 
-- Task
-  http://webservice.docker.localhost/vista
+- Task long
+  http://webservice1.docker.localhost/vista
 
 
 

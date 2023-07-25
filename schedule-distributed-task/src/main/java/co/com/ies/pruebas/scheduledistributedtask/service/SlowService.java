@@ -64,7 +64,7 @@ public class SlowService {
     }
 
 
-    private void fillHighContainers(HighContainers highContainer) {
+    public void fillHighContainers(HighContainers highContainer) {
         System.out.println("SlowService.fillHighContainers");
         List<ListContainers> listContainers = highContainer.listContainers;
         for (ListContainers listContainer : listContainers) {
@@ -75,7 +75,7 @@ public class SlowService {
     }
 
 
-    private void fillListContainers(ListContainers listContainer) {
+    public void fillListContainers(ListContainers listContainer) {
         System.out.println("SlowService.fillListContainers");
         List<SlowView> slowViews = listContainer.slowViews;
         for (int i = 0; i < INITIAL_CAPACITY;i++) {
