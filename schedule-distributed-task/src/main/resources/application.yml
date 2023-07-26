@@ -10,13 +10,16 @@ spring:
     hibernate:
 #      ddl-auto: create-drop
       show-sql: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
 
 
 org:
   jobrunr:
     background-job-server:
       enabled: 'true'
-      worker-count: 1
+      worker-count: 2
     dashboard:
       port: '8081'
       enabled: 'true'
