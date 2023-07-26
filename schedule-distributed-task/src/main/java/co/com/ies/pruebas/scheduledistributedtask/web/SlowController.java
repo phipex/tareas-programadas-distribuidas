@@ -1,5 +1,7 @@
 package co.com.ies.pruebas.scheduledistributedtask.web;
 
+import co.com.ies.pruebas.scheduledistributedtask.persistence.Execution;
+import co.com.ies.pruebas.scheduledistributedtask.persistence.ExecutionRepository;
 import co.com.ies.pruebas.scheduledistributedtask.service.SlowService;
 import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowView;
 import co.com.ies.pruebas.scheduledistributedtask.config.MeasureTime;
@@ -10,6 +12,7 @@ import static org.jobrunr.scheduling.JobBuilder.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Duration;
+import java.time.ZonedDateTime;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +24,12 @@ public class SlowController {
     private final SlowService slowService;
     private final JobScheduler jobScheduler;
 
-    public SlowController(SlowService slowService, JobScheduler jobSchedule) {
+    private final ExecutionRepository executionRepository;
+
+    public SlowController(SlowService slowService, JobScheduler jobSchedule, ExecutionRepository executionRepository) {
         this.slowService = slowService;
         this.jobScheduler = jobSchedule;
+        this.executionRepository = executionRepository;
     }
 
     @MeasureTime
@@ -51,10 +57,14 @@ public class SlowController {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+        Execution execution = new Execution();
+        execution.setLaunch(ip);
+        execution.setCalled(ZonedDateTime.now());
+        Execution saved = executionRepository.save(execution);
 
         jobScheduler.create(aJob()
                 .withName("Generate sales report" + ip)
-                .withDetails(() -> slowService.queryHighContainers()));
+                .withDetails(() -> slowService.queryHighContainers(saved.getId())));
         return ResponseEntity.ok("queryHighContainers");
     }
 

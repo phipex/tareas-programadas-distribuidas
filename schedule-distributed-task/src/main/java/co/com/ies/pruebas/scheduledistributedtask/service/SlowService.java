@@ -1,5 +1,7 @@
 package co.com.ies.pruebas.scheduledistributedtask.service;
 
+import co.com.ies.pruebas.scheduledistributedtask.persistence.Execution;
+import co.com.ies.pruebas.scheduledistributedtask.persistence.ExecutionRepository;
 import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowView;
 import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowViewRepository;
 import co.com.ies.pruebas.scheduledistributedtask.config.MeasureTime;
@@ -7,6 +9,9 @@ import lombok.Data;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +22,11 @@ public class SlowService {
     public static final int INITIAL_CAPACITY = 2;
     private final SlowViewRepository slowViewRepository;
 
-    public SlowService(SlowViewRepository slowViewRepository) {
+    private final ExecutionRepository executionRepository;
+
+    public SlowService(SlowViewRepository slowViewRepository, ExecutionRepository executionRepository) {
         this.slowViewRepository = slowViewRepository;
+        this.executionRepository = executionRepository;
     }
 
     public Optional<SlowView> getVistaLenta(){
@@ -48,6 +56,23 @@ public class SlowService {
     public void test(){
         System.out.println("SlowService.test");
         queryHighContainers();
+    }
+
+    public void queryHighContainers(Long execitionId) {
+        Execution execution = executionRepository.getById(execitionId);
+        String ip = "0";
+        try {
+            String hostAddress = InetAddress.getLocalHost().getHostAddress();
+            String hostName = InetAddress.getLocalHost().getHostName();
+            ip = hostAddress;
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        execution.setResolve(ip);
+        execution.setStart(ZonedDateTime.now());
+        queryHighContainers();
+        execution.setFinish(ZonedDateTime.now());
+        executionRepository.save(execution);
     }
 
     @MeasureTime
