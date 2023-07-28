@@ -5,6 +5,7 @@ import co.com.ies.pruebas.scheduledistributedtask.persistence.Execution;
 import co.com.ies.pruebas.scheduledistributedtask.persistence.ExecutionRepository;
 import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowView;
 import co.com.ies.pruebas.scheduledistributedtask.service.SlowService;
+import org.redisson.api.RedissonClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,9 +21,12 @@ public class SlowController {
 
     private final ExecutionRepository executionRepository;
 
-    public SlowController(SlowService slowService, ExecutionRepository executionRepository) {
+    private final RedissonClient client;
+
+    public SlowController(SlowService slowService, ExecutionRepository executionRepository, RedissonClient client) {
         this.slowService = slowService;
         this.executionRepository = executionRepository;
+        this.client = client;
     }
 
     @MeasureTime
@@ -74,5 +78,28 @@ public class SlowController {
 
 
         return ResponseEntity.ok("queryHighContainers");
+    }
+
+    @MeasureTime
+    @GetMapping("/vista5")
+    public ResponseEntity<String> remote(){
+        SlowService service = client.getRemoteService().get(SlowService.class);
+
+        String ip = "0";
+        try {
+            String hostAddress = InetAddress.getLocalHost().getHostAddress();
+            String hostName = InetAddress.getLocalHost().getHostName();
+            ip = hostAddress;
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        Execution execution = new Execution();
+        execution.setLaunch(ip);
+        execution.setCalled(ZonedDateTime.now());
+        Execution saved = executionRepository.save(execution);
+
+        service.queryHighContainers(saved.getId());
+
+        return ResponseEntity.ok("remote");
     }
 }

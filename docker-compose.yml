@@ -35,6 +35,9 @@ services:
     depends_on:
      - reverse-proxy
      - postgres
+    environment:
+
+      - SPRING_REDIS_HOSTredis
 
   postgres:
     image: postgres
