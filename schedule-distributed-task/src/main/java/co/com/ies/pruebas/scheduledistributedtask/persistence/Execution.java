@@ -1,12 +1,16 @@
 package co.com.ies.pruebas.scheduledistributedtask.persistence;
 
-import lombok.Data;
-
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "execution")
 public class Execution {
@@ -30,4 +34,19 @@ public class Execution {
     @Column(name = "launch")
     private String launch;
 
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Execution execution = (Execution) o;
+        return id != null && Objects.equals(id, execution.id);
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

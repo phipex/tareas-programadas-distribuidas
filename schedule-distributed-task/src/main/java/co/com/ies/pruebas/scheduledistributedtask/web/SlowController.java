@@ -1,34 +1,27 @@
 package co.com.ies.pruebas.scheduledistributedtask.web;
 
+import co.com.ies.pruebas.scheduledistributedtask.config.MeasureTime;
 import co.com.ies.pruebas.scheduledistributedtask.persistence.Execution;
 import co.com.ies.pruebas.scheduledistributedtask.persistence.ExecutionRepository;
-import co.com.ies.pruebas.scheduledistributedtask.service.SlowService;
 import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowView;
-import co.com.ies.pruebas.scheduledistributedtask.config.MeasureTime;
-
-import org.jobrunr.scheduling.JobScheduler;
-import static org.jobrunr.scheduling.JobBuilder.*;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.time.Duration;
-import java.time.ZonedDateTime;
-
+import co.com.ies.pruebas.scheduledistributedtask.service.SlowService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.time.ZonedDateTime;
 
 @RestController
 public class SlowController {
 
     private final SlowService slowService;
-    private final JobScheduler jobScheduler;
 
     private final ExecutionRepository executionRepository;
 
-    public SlowController(SlowService slowService, JobScheduler jobSchedule, ExecutionRepository executionRepository) {
+    public SlowController(SlowService slowService, ExecutionRepository executionRepository) {
         this.slowService = slowService;
-        this.jobScheduler = jobSchedule;
         this.executionRepository = executionRepository;
     }
 
@@ -62,9 +55,7 @@ public class SlowController {
         execution.setCalled(ZonedDateTime.now());
         Execution saved = executionRepository.save(execution);
 
-        jobScheduler.create(aJob()
-                .withName("Generate sales report" + ip)
-                .withDetails(() -> slowService.queryHighContainers(saved.getId())));
+
         return ResponseEntity.ok("queryHighContainers");
     }
 
@@ -81,10 +72,7 @@ public class SlowController {
             e.printStackTrace();
         }
 
-        jobScheduler.create(aJob()
-                .scheduleIn(Duration.ofSeconds(10))
-                .withName("Generate sales report" + ip)
-                .withDetails(() -> slowService.queryHighContainers()));
+
         return ResponseEntity.ok("queryHighContainers");
     }
 }
