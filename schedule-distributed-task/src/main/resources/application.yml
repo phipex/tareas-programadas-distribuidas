@@ -1,35 +1,22 @@
+
 spring:
+
   datasource:
     name: postgres
-    #url: jdbc:postgresql://postgres:5432/postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://postgres:5432/postgres
+    #url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: postgres
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL92Dialect
     hibernate:
-#      ddl-auto: create-drop
+      ddl-auto: update
       show-sql: true
     properties:
       hibernate:
         enable_lazy_load_no_trans: true
-  data:
-    redis:
-      host: redis1
-  redis:
-    host: redis2
-    redisson:
-      host: redis3
 
 
-org:
-  jobrunr:
-    background-job-server:
-      enabled: 'true'
-      worker-count: 2
-    dashboard:
-      port: '8081'
-      enabled: 'true'
 
 management:
   endpoints:

@@ -32,8 +32,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop
 	implementation("org.springframework.boot:spring-boot-starter-aop:3.1.2")
-	//implementation("org.springframework.boot:spring-boot-starter-data-redis")
-	implementation("org.redisson:redisson-spring-boot-starter:3.23.2")
+	implementation ("org.redisson:redisson-spring-data-27:3.23.2")
 
 
 
