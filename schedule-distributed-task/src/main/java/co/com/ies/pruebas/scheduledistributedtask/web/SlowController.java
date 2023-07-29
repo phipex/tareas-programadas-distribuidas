@@ -83,6 +83,16 @@ public class SlowController {
     @MeasureTime
     @GetMapping("/vista5")
     public ResponseEntity<String> remote(){
+        callTask();
+callTask();
+callTask();
+callTask();
+callTask();
+callTask();
+        return ResponseEntity.ok("remote");
+    }
+
+    private void callTask() {
         SlowService service = client.getRemoteService().get(SlowService.class);
 
         String ip = "0";
@@ -99,7 +109,5 @@ public class SlowController {
         Execution saved = executionRepository.save(execution);
 
         service.queryHighContainers(saved.getId());
-
-        return ResponseEntity.ok("remote");
     }
 }

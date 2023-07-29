@@ -5,6 +5,9 @@ import co.com.ies.pruebas.scheduledistributedtask.persistence.ExecutionRepositor
 import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowView;
 import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowViewRepository;
 import co.com.ies.pruebas.scheduledistributedtask.config.MeasureTime;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,8 @@ import java.util.Optional;
 
 @Service
 public class SlowServiceImpl implements SlowService {
+
+    Logger logger = LoggerFactory.getLogger(SlowServiceImpl.class);
 
     private final SlowViewRepository slowViewRepository;
 
@@ -34,7 +39,7 @@ public class SlowServiceImpl implements SlowService {
 
     @Override
     public List<HighContainers> createHighContainers(){
-        System.out.println("SlowService.createHighContainers");
+        logger.info("SlowService.createHighContainers");
         List<HighContainers> highContainers = new ArrayList<>();
         for (int i = 0; i < INITIAL_CAPACITY; i++) {
             HighContainers containers =  new HighContainers();
@@ -55,10 +60,11 @@ public class SlowServiceImpl implements SlowService {
     @Async
     @MeasureTime
     public void test(){
-        System.out.println("SlowService.test");
+        logger.info("SlowService.test");
         queryHighContainers();
     }
 
+    @Async
     @Override
     public void queryHighContainers(Long execitionId) {
         Execution execution = executionRepository.getById(execitionId);
@@ -80,33 +86,33 @@ public class SlowServiceImpl implements SlowService {
     @Override
     @MeasureTime
     public List<HighContainers> queryHighContainers(){
-        System.out.println("SlowService.queryHighContainers");
+        logger.info("SlowService.queryHighContainers");
         List<HighContainers> highContainers = createHighContainers();
 
         for (HighContainers highContainer : highContainers) {
             fillHighContainers(highContainer);
         }
-        System.out.println("SlowService.queryHighContainers");
-        System.out.println("highContainers = " + highContainers);
+        logger.info("SlowService.queryHighContainers");
+        logger.info("highContainers = " + highContainers);
         return highContainers;
     }
 
 
     @Override
     public void fillHighContainers(HighContainers highContainer) {
-        System.out.println("SlowService.fillHighContainers");
+        logger.info("SlowService.fillHighContainers");
         List<ListContainers> listContainers = highContainer.listContainers;
         for (ListContainers listContainer : listContainers) {
             fillListContainers(listContainer);
         }
-        System.out.println("SlowService.fillHighContainers");
-        System.out.println("listContainers = " + listContainers);
+        logger.info("SlowService.fillHighContainers");
+        logger.info("listContainers = " + listContainers);
     }
 
 
     @Override
     public void fillListContainers(ListContainers listContainer) {
-        System.out.println("SlowService.fillListContainers");
+        logger.info("SlowService.fillListContainers");
         List<SlowView> slowViews = listContainer.slowViews;
         for (int i = 0; i < INITIAL_CAPACITY;i++) {
             Optional<SlowView> vistaLenta = getVistaLenta();
