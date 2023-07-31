@@ -6,10 +6,7 @@ import co.com.ies.pruebas.scheduledistributedtask.persistence.ExecutionRepositor
 import co.com.ies.pruebas.scheduledistributedtask.persistence.SlowView;
 import co.com.ies.pruebas.scheduledistributedtask.service.SlowService;
 
-import org.redisson.api.RAtomicLong;
-import org.redisson.api.RExecutorService;
-import org.redisson.api.RedissonClient;
-import org.redisson.api.WorkerOptions;
+import org.redisson.api.*;
 import org.redisson.api.annotation.RInject;
 import org.redisson.api.executor.TaskFailureListener;
 import org.redisson.api.executor.TaskFinishedListener;
@@ -26,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.ZonedDateTime;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -47,8 +45,8 @@ public class SlowController {
             // Defines workers amount used to execute tasks.
             // Default is 1.
             .workers(2)
-
-    //.beanFactory(beanFactory)
+            .executorService(Executors.newFixedThreadPool(2))
+            //.beanFactory(beanFactory)
 
             // add listener which is invoked on task successed event
             .addListener(new TaskSuccessListener() {
@@ -101,7 +99,7 @@ public class SlowController {
         return ResponseEntity.ok("VistaLentaContainers");
     }
 
-    @MeasureTime
+  /*  @MeasureTime
     @GetMapping("/vista3")
     public ResponseEntity<String> getVistaLentaContainersQeue() {
         // jobScheduler.enqueue(() -> slowService.queryHighContainers());
@@ -120,7 +118,8 @@ public class SlowController {
 
         return ResponseEntity.ok("queryHighContainers");
     }
-
+*/
+/*
     @MeasureTime
     @GetMapping("/vista4")
     public ResponseEntity<String> getVistaLentaContainersSchedule() {
@@ -136,11 +135,13 @@ public class SlowController {
 
         return ResponseEntity.ok("queryHighContainers");
     }
+*/
 
     @MeasureTime
     @GetMapping("/vista5")
     public ResponseEntity<String> remote() {
-        RExecutorService executor = client.getExecutorService("myExecutor");
+        ExecutorOptions executorOptions = ExecutorOptions.defaults();
+        RExecutorService executor = client.getExecutorService("myExecutor", executorOptions);
         executor.registerWorkers(options);
         callTask(executor);
         callTask(executor);
@@ -152,8 +153,6 @@ public class SlowController {
     }
 
     private void callTask(RExecutorService executor) {
-
-
 
         String ip = "0";
         try {
@@ -168,13 +167,10 @@ public class SlowController {
         execution.setCalled(ZonedDateTime.now());
         Execution saved = executionRepository.save(execution);
 
-        //service.queryHighContainers(saved.getId());
         executor.submit(new RunnableTask(saved.getId()));
     }
 
     private void callTask0() {
-
-
 
         SlowService service = client.getRemoteService().get(SlowService.class);
 

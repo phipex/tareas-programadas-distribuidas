@@ -64,7 +64,7 @@ public class SlowServiceImpl implements SlowService {
         queryHighContainers();
     }
 
-
+    @Async
     @Override
     public void queryHighContainers(Long execitionId) {
         Execution execution = executionRepository.getById(execitionId);
